@@ -9,4 +9,6 @@ Rails.application.routes.draw do
     get 'signup' => 'users#new'
     #resources = :show, :create, :update, :destroy, :index, :new, :editがまとめてつかえる
     resources :users, only: [:index, :show, :new, :create]
+    
+    resources :microposts, only: [:create, :destroy]
 end
