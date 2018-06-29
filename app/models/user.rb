@@ -6,5 +6,35 @@ class User < ApplicationRecord
                       uniqueness: { case_sensitive: false }
     has_secure_password
     
-    has_many :microposts
+    # User ⇔　relationship  ⇔ User
+    
+    has_many :microposts 
+    #UserがRelationshipと一対多である関係を示す
+    has_many :relationships
+    #user.followingsと書けば、userがフォローしているUser達を取得できる
+    #through: :relationshipは、has_many: relationshipの結果を中間テーブルとして指定します
+    #さらにその中間テーブルのカラムの中でどれを参照先のidとすべきかをsource: :followで選択する
+    #結果として、user.followingsは、userが中間テーブルrelationshipsを取得し、その一つ一つのrelationshipのfollow_idから、「フォローしているUser達」を取得しています
+    has_many :followings, through: :relationships, source: :follow
+    #class_name: 'Relationship'で参照するクラスを指定
+    has_many :reverses_of_relationship, class_name: 'Relationship', foreign_key: 'follow_id'
+    has_many :followers, through: :reverses_of_relationship, source: :user
+    
+    def follow(other_user)
+        unless self == other_user
+            self.relationships.find_or_create_by(follow_id: other_user.id)
+        end
+    end
+    
+    def unfollow(other_user)
+        relationship = self.relationships.find_by(follow_id: other_user.id)
+        relationship.destroy if relationship
+    end
+    
+    def following?(other_user)
+        self.followings.include?(other_user)
+    end
+    
+    
+    
 end
