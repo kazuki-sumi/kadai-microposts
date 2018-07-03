@@ -8,13 +8,14 @@
   </aside>
     <ul class="media-list">
   <% @user.favorite_microposts.each do |user_favorite| %>
-    <li class="media">
+    <li>
       <div class="media-body">
         <div>
-          <p><%= user_favorite %></p>
+          <%= user_favorite.id %>
+          <%= user_favorite.content %>
         </div>
       </div>
-    </li>
+    </li>  
   <% end %>
 </ul>
 </div>
