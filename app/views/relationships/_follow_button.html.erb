@@ -2,7 +2,7 @@
 
     <% if current_user.following?(user) %>
         <!-- アンフォローボタン-->
-        <%= form_for(current_user.relationship.find_by(follow_id: user.id), html: {method: :delete}) do |f| %>
+        <%= form_for(current_user.relationships.find_by(follow_id: user.id), html: {method: :delete}) do |f| %>
             <!-- hiddenによってuser.idを渡す-->
             <%= hidden_field_tag :follow_id, user.id %>
             <%= f.submit 'Unfollow', class: 'btn btn-danger btn-block' %>
@@ -11,7 +11,7 @@
     <% else %>
     
         <!-- フォローボタン:フォローしていない場合に表示される -->
-        <% form_for(current_user.relationships.build) do |f| %>
+        <%= form_for(current_user.relationships.build) do |f| %>
             <!-- 下記は<input type="hidden" name="follow_id" value="ユーザのid"を生成する-->
             <%= hidden_field_tag :follow_id, user.id %>
             <%= f.submit 'Follow', class: 'btn btn-primary btn-block' %>

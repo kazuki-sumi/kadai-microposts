@@ -1,0 +1,27 @@
+<div class="row">
+  <aside class="col-xs-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><%= @user.name %></h3>
+      </div>
+      <div class="panel-body">
+        <img class="media-object img-rounded img-responsive" src="<%= gravatar_url(@user, { size: 500 }) %>" alt="">
+      </div>
+    </div>
+    <%= render 'relationships/follow_button', user: @user %>
+  </aside>
+    <ul class="media-list">
+  <% @user.favorite_microposts.each do |user_favorite| %>
+    <li class="media">
+      <div class="media-left">
+        <img class="media-object img-rounded" src="<%= gravatar_url(user_favorite.user, { size: 50 }) %>" alt="">
+      </div>
+      <div class="media-body">
+        <div>
+          <p><%= user_favorite.content %></p>
+        </div>
+      </div>
+    </li>
+  <% end %>
+</ul>
+</div>
